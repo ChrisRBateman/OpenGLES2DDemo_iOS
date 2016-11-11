@@ -16,19 +16,13 @@ class PlayButton: Button {
     override init() {
         super.init()
         
-        // Setup vertices data for speed image.
+        // Setup vertices data for play image.
         verticesData = [
             -0.07, 0.07, 0.0,   // Position 0
             0.0, 0.0,           // TexCoord 0
             
             -0.07, -0.07, 0.0,  // Position 1
             0.0, 1.0,           // TexCoord 1
-            
-            0.07, -0.07, 0.0,   // Position 2
-            1.0, 1.0,           // TexCoord 2
-            
-            -0.07, 0.07, 0.0,   // Position 0
-            0.0, 0.0,           // TexCoord 0
             
             0.07, -0.07, 0.0,   // Position 2
             1.0, 1.0,           // TexCoord 2

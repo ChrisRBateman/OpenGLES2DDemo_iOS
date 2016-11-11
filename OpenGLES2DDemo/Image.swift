@@ -24,6 +24,7 @@ class Image {
     
     var vertexArray: GLuint = 0
     var vertexBuffer: GLuint = 0
+    var indexBuffer: GLuint = 0
     
     init() {
     }
@@ -64,8 +65,14 @@ class Image {
         glBindBuffer(GLenum(GL_ARRAY_BUFFER), vertexBuffer)
         glBufferData(GLenum(GL_ARRAY_BUFFER), GLsizeiptr(sizeof(GLfloat) * verticesData.count), &verticesData, GLenum(GL_STATIC_DRAW))
         
+        let indicesData: [GLushort] = [ 0, 1, 2, 0, 2, 3 ]
+        glGenBuffers(1, &indexBuffer)
+        glBindBuffer(GLenum(GL_ELEMENT_ARRAY_BUFFER), indexBuffer)
+        glBufferData(GLenum(GL_ELEMENT_ARRAY_BUFFER), GLsizeiptr(sizeof(GLushort) * indicesData.count), indicesData, GLenum(GL_STATIC_DRAW))
+        
         glEnableVertexAttribArray(GLuint(GLKVertexAttrib.Position.rawValue))
         glVertexAttribPointer(GLuint(GLKVertexAttrib.Position.rawValue), 3, GLenum(GL_FLOAT), GLboolean(GL_FALSE), 20, BUFFER_OFFSET(0))
+        
         glEnableVertexAttribArray(GLuint(GLKVertexAttrib.TexCoord0.rawValue))
         glVertexAttribPointer(GLuint(GLKVertexAttrib.TexCoord0.rawValue), 2, GLenum(GL_FLOAT), GLboolean(GL_FALSE), 20, BUFFER_OFFSET(12))
         
@@ -90,7 +97,8 @@ class Image {
         withUnsafePointer(&mvpMatrix, {
             glUniformMatrix4fv(mvpMatrixLocation, 1, 0, UnsafePointer($0))
         })
-        glDrawArrays(GLenum(GL_TRIANGLES), 0, 6)
+        
+        glDrawElements(GLenum(GL_TRIANGLES), 6, GLenum(GL_UNSIGNED_SHORT), BUFFER_OFFSET(0))
     }
     
     /**
@@ -107,6 +115,11 @@ class Image {
             vertexBuffer = 0
         }
         
+        if indexBuffer != 0 {
+            glDeleteBuffers(1, &indexBuffer)
+            indexBuffer = 0
+        }
+        
         if vertexArray != 0 {
             glDeleteVertexArraysOES(1, &vertexArray)
             vertexArray = 0
@@ -119,7 +132,7 @@ class Image {
     }
     
     /**
-     Load texture from file (of type). File should be part of project.
+        Load texture from file (of type). File should be part of project.
      
         - Parameters:
             - file: Name of texture file.
@@ -160,8 +173,8 @@ class Image {
     }
     
     /**
-     Loads vertex and fragment shaders, creates program object, links program, returns
-     program id.
+        Loads vertex and fragment shaders, creates program object, links program, returns
+        program id.
      
         - Parameters:
             - vShaderCode: Vertex shader code as string.
@@ -230,7 +243,7 @@ class Image {
     }
     
     /**
-     Create, load and compile a shader of type.
+        Create, load and compile a shader of type.
      
         - Parameters:
             - type: The type of shader.

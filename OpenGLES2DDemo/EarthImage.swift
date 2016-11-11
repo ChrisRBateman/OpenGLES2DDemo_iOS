@@ -8,6 +8,9 @@
 
 import GLKit
 
+/**
+    Renders an image of earth.
+ */
 class EarthImage: Image {
     
     override init() {
@@ -20,12 +23,6 @@ class EarthImage: Image {
             
             -0.3, -0.3, 0.0,    // Position 1
             0.0, 1.0,           // TexCoord 1
-            
-            0.3, -0.3, 0.0,     // Position 2
-            1.0, 1.0,           // TexCoord 2
-            
-            -0.3, 0.3, 0.0,     // Position 0
-            0.0, 0.0,           // TexCoord 0
             
             0.3, -0.3, 0.0,     // Position 2
             1.0, 1.0,           // TexCoord 2

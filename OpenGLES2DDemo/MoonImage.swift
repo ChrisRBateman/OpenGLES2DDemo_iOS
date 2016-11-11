@@ -8,6 +8,9 @@
 
 import GLKit
 
+/**
+    Renders an image of moon.
+ */
 class MoonImage: Image {
     
     let MIN_SPEED: Float = 0.20
@@ -33,12 +36,6 @@ class MoonImage: Image {
             
             -0.1, -0.1, 0.0,    // Position 1
             0.0, 1.0,           // TexCoord 1
-            
-            0.1, -0.1, 0.0,     // Position 2
-            1.0, 1.0,           // TexCoord 2
-            
-            -0.1, 0.1, 0.0,     // Position 0
-            0.0, 0.0,           // TexCoord 0
             
             0.1, -0.1, 0.0,     // Position 2
             1.0, 1.0,           // TexCoord 2

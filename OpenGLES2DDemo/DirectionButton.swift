@@ -27,12 +27,6 @@ class DirectionButton: Button {
             0.07, -0.07, 0.0,   // Position 2
             1.0, 1.0,           // TexCoord 2
             
-            -0.07, 0.07, 0.0,   // Position 0
-            0.0, 0.0,           // TexCoord 0
-            
-            0.07, -0.07, 0.0,   // Position 2
-            1.0, 1.0,           // TexCoord 2
-            
             0.07, 0.07, 0.0,    // Position 3
             1.0, 0.0            // TexCoord 3
         ]
