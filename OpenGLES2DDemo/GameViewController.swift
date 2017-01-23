@@ -9,9 +9,8 @@
 import GLKit
 import OpenGLES
 
-func BUFFER_OFFSET(i: Int) -> UnsafePointer<Void> {
-    let p: UnsafePointer<Void> = nil
-    return p.advancedBy(i)
+func BUFFER_OFFSET(_ i: Int) -> UnsafeRawPointer? {
+    return UnsafeRawPointer(bitPattern: i)
 }
 
 class GameViewController: GLKViewController {
@@ -38,17 +37,17 @@ class GameViewController: GLKViewController {
     deinit {
         tearDownGL()
         
-        if EAGLContext.currentContext() === context {
-            EAGLContext.setCurrentContext(nil)
+        if EAGLContext.current() === context {
+            EAGLContext.setCurrent(nil)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("viewDidLoad")
+        print("GameViewController - viewDidLoad")
         
-        context = EAGLContext(API: .OpenGLES2)
+        context = EAGLContext(api: .openGLES2)
         
         if !(context != nil) {
             print("Failed to create ES context")
@@ -56,7 +55,7 @@ class GameViewController: GLKViewController {
         
         let view = self.view as! GLKView
         view.context = context!
-        view.drawableDepthFormat = .Format24
+        view.drawableDepthFormat = .format24
         
         setupGL()
     }
@@ -64,31 +63,31 @@ class GameViewController: GLKViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
-        if isViewLoaded() && (view.window != nil) {
+        if isViewLoaded && (view.window != nil) {
             view = nil
             
             tearDownGL()
             
-            if EAGLContext.currentContext() === context {
-                EAGLContext.setCurrentContext(nil)
+            if EAGLContext.current() === context {
+                EAGLContext.setCurrent(nil)
             }
             context = nil
         }
     }
     
-    override func prefersStatusBarHidden () -> Bool {
+    override var prefersStatusBarHidden  : Bool {
         return true
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
-            var location = touch.locationInView(view)
-            let scale = UIScreen.mainScreen().scale
+            var location = touch.location(in: view)
+            let scale = UIScreen.main.scale
             
             location.x *= scale
             location.y *= scale
             
-            var viewport: [Int32] = [Int32](count: Int(4), repeatedValue: 0)
+            var viewport: [Int32] = [Int32](repeating: 0, count: Int(4))
             glGetIntegerv(GLenum(GL_VIEWPORT), &viewport)
             
             if speedButton!.handleTouch(Float(location.x), Float(location.y), projectionMatrix, &viewport) {
@@ -99,11 +98,11 @@ class GameViewController: GLKViewController {
                 changeDirection()
             }
         }
-        super.touchesBegan(touches, withEvent:event)
+        super.touchesBegan(touches, with:event)
     }
     
     func setupGL() {
-        EAGLContext.setCurrentContext(context)
+        EAGLContext.setCurrent(context)
         
         preferredFramesPerSecond = 60
         
@@ -127,7 +126,7 @@ class GameViewController: GLKViewController {
     }
     
     func tearDownGL() {
-        EAGLContext.setCurrentContext(context)
+        EAGLContext.setCurrent(context)
         
         starsImage!.cleanUp()
         earthImage!.cleanUp()
@@ -149,7 +148,7 @@ class GameViewController: GLKViewController {
         scaleMatrix = GLKMatrix4MakeScale(scaleValue, scaleValue, 1.0)
     }
     
-    override func glkView(view: GLKView, drawInRect rect: CGRect) {
+    override func glkView(_ view: GLKView, drawIn rect: CGRect) {
         glClear(GLbitfield(GL_COLOR_BUFFER_BIT) | GLbitfield(GL_DEPTH_BUFFER_BIT))
         
         starsImage!.draw(&pvMatrix)
@@ -216,7 +215,7 @@ class GameViewController: GLKViewController {
             - timeDeltaSeconds: the time interval
         - Returns: the scale value
      */
-    func getButtonAnimationScaleValue(timeDeltaSeconds: Float) -> Float {
+    func getButtonAnimationScaleValue(_ timeDeltaSeconds: Float) -> Float {
         let min: Double = 1.0 - 0.04
         let max: Double = 1.0 + 0.04
         let period: Double = 0.5

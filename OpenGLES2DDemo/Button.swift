@@ -63,7 +63,7 @@ class Button: Image {
             - mvpMatrix: the Model View Projection matrix to position image
             - scaleMatrix: the Scaling matrix
      */
-    func draw(inout mvpMatrix: GLKMatrix4, inout _ scaleMatrix: GLKMatrix4) {
+    func draw(_ mvpMatrix: inout GLKMatrix4, _ scaleMatrix: inout GLKMatrix4) {
         // Translate then scale
         let intermediate = GLKMatrix4Multiply(mvpMatrix, translateMatrix)
         var final = GLKMatrix4Multiply(intermediate, scaleMatrix)
@@ -76,7 +76,7 @@ class Button: Image {
         - Parameters:
             - index: the index of image
      */
-    func setCurrentImage(index: Int) {
+    func setCurrentImage(_ index: Int) {
         if (index >= 0) && (index < textureInfoArray.count) {
             textureInfo = textureInfoArray[index];
         }
@@ -92,7 +92,7 @@ class Button: Image {
             - viewport: screen dimensions
         - Returns: true if button handles touch; otherwise false
      */
-    func handleTouch(x: Float, _ y: Float, _ pMatrix: GLKMatrix4, inout _ viewport: [Int32]) -> Bool {
+    func handleTouch(_ x: Float, _ y: Float, _ pMatrix: GLKMatrix4, _ viewport: inout [Int32]) -> Bool {
         let newY: Float = Float(viewport[3]) - y
         let window = GLKVector3Make(x, newY, 1.0)
         var success: Bool = false
@@ -115,7 +115,7 @@ class Button: Image {
             - r: the rectangle
         - Returns: true if point in rect; otherwise false
      */
-    func pointInRect(x: Float, _ y: Float, _ r: Rect) -> Bool {
+    func pointInRect(_ x: Float, _ y: Float, _ r: Rect) -> Bool {
         return ((r.left <= x && x <= r.right) || (r.right <= x && x <= r.left)) &&
                 ((r.top <= y && y <= r.bottom) || (r.bottom <= y && y <= r.top))
     }

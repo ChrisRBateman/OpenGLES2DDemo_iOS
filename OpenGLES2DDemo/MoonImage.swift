@@ -59,7 +59,7 @@ class MoonImage: Image {
         - Parameters:
             - timeDeltaSeconds: time delta
      */
-    func update(timeDeltaSeconds: Float) {
+    func update(_ timeDeltaSeconds: Float) {
         if isAnimating {
             x = x + (Float(directionX) * speed * timeDeltaSeconds)
             y = y + (Float(directionY) * speed * timeDeltaSeconds)
